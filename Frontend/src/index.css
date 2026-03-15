@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --font-sans: 'Outfit', ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  
+  --color-brand-primary: #3b82f6;
+  --color-brand-secondary: #60a5fa;
+  
+  /* Dark Dim Theme Palette */
+  --color-bg-dim-sidebar: #171717; /* Slate Grey Sidebar */
+  --color-bg-dim-main: #000000;    /* Absolute Black Main */
+  --color-border-dim: #2d2d2d;
+  --color-text-dim-primary: #f5f5f5;
+  --color-text-dim-secondary: #a3a3a3;
+  --color-text-dim-muted: #525252;
+}
+
+@layer base {
+  html, body {
+    @apply h-full overflow-hidden antialiased;
+    font-family: var(--font-sans);
+    background-color: var(--color-bg-dim-main);
+    color: var(--color-text-dim-primary);
+  }
+
+  /* Robust Scrollbar for Sidebar Accessibility */
+  .custom-scrollbar::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-black/20;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-white/10 rounded-full hover:bg-white/20 border-2 border-transparent bg-clip-padding transition-colors;
+  }
+}
+
+@layer utilities {
+  .glass-dark {
+    @apply bg-white/[0.03] backdrop-blur-xl border border-white/10 shadow-2xl;
+  }
+  
+  .glass-hover-dark {
+    @apply hover:bg-white/[0.08] transition-all duration-300;
+  }
+  
+  .premium-gradient {
+    @apply bg-gradient-to-br from-brand-primary to-brand-secondary;
+  }
+  
+  .text-gradient {
+    @apply bg-gradient-to-br from-white via-white/90 to-white/40 bg-clip-text text-transparent;
+  }
+}
+
+/* Prose & Markdown Overrides for Dark Section */
+.prose {
+  @apply text-text-dim-secondary max-w-none;
+}
+
+.prose pre {
+  @apply rounded-2xl border border-white/10 bg-[#0a0a0a] text-gray-200 p-5 shadow-inner;
+}
+
+.prose code {
+  @apply text-brand-secondary font-bold;
+}
+
+.prose a {
+  @apply text-brand-primary hover:underline transition-all;
+}
+
+.prose strong {
+  @apply text-white font-black;
+}
+
+.prose h1, .prose h2, .prose h3 {
+  @apply text-white font-black tracking-tight;
+}
