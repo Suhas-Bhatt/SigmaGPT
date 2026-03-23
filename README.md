@@ -1,73 +1,148 @@
-# 🌌 SigmaGPT: Premium Full-Stack AI Chat
+# 🌌 SigmaGPT
 
-SigmaGPT is a state-of-the-art AI chat interface designed for deep focus and precision. It features a sophisticated "Dark Dim" UI, real-time message streaming, and intelligent thread management.
+A premium, full-stack AI chat application powered by OpenAI GPT-4o-Mini. Features a sophisticated Dark Dim UI, real-time conversation persistence, and intelligent thread management — all containerised with Docker.
 
-![SigmaGPT Header](file:///C:/Users/Suhas/.gemini/antigravity/brain/1d35360c-15e4-4715-944f-eb3b80884eed/sigmagpt_final_ui_1773558708507.png)
+---
 
-## ✨ Core Features
+## ✨ Features
 
-- **Dark Dim UI**: Absolute black backgrounds with slate grey accents optimized for visual comfort.
-- **Ultra-Responsive**: Seamless experience across mobile, tablet, and desktop using Tailwind CSS v4.
-- **Smart Sorting**: Your most recently used conversations automatically jump to the top of the sidebar.
-- **Premium Aesthetics**: Glassmorphism, smooth animations, and high-end typography (Outfit).
-- **Pro Dashboard**: A sleek user interface for account management and system insights.
-- **Real-time Persistence**: Messages are securely stored in MongoDB and updated in real-time.
+- **AI-Powered Chat** — Conversations driven by OpenAI GPT-4o-Mini
+- **Dark Dim UI** — Absolute-black backgrounds with slate-grey accents, optimised for long sessions
+- **Conversation Threads** — Create, rename, and switch between multiple chat sessions
+- **Smart Sidebar Sorting** — Most recently active threads surface to the top automatically
+- **Real-time Persistence** — All messages stored in MongoDB Atlas
+- **Responsive Design** — Seamless across mobile, tablet, and desktop via Tailwind CSS v4
+- **Glassmorphism Aesthetics** — Smooth animations and premium typography (Outfit font)
+
+---
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: Vite + React + Tailwind CSS v4
-- **Backend**: Node.js + Express
-- **Database**: MongoDB (Mongoose)
-- **AI Engine**: OpenAI (GPT-4o-Mini)
-- **Styling**: Google Fonts (Outfit) + FontAwesome 6
+| Layer | Technology |
+|---|---|
+| **Frontend** | React 19, Vite, Tailwind CSS v4 |
+| **Backend** | Node.js, Express 5 |
+| **Database** | MongoDB Atlas (Mongoose) |
+| **AI Engine** | OpenAI API — GPT-4o-Mini |
+| **Containerisation** | Docker, Docker Compose, Nginx |
 
-## 🚀 Getting Started
+---
 
-### 1. Prerequisites
-- Node.js (v18+)
-- MongoDB Atlas account
-- OpenAI API Key
+## 📁 Project Structure
 
-### 2. Installation
-Clone the repository and install dependencies in both folders:
-
-```bash
-# Backend
-cd Backend
-npm install
-
-# Frontend
-cd ../Frontend
-npm install
+```
+SigmaGPT-AI-Chat-Application/
+├── Backend/
+│   ├── models/          # Mongoose schemas
+│   ├── routes/          # Express API routes
+│   ├── utils/           # Helper utilities
+│   ├── server.js        # Entry point
+│   ├── .env             # Backend environment variables (git-ignored)
+│   └── Dockerfile
+├── Frontend/
+│   ├── src/
+│   │   ├── App.jsx
+│   │   ├── Chat.jsx
+│   │   ├── ChatWindow.jsx
+│   │   ├── Sidebar.jsx
+│   │   └── ...
+│   ├── .env             # Frontend environment variables (git-ignored)
+│   ├── nginx.conf       # Nginx config for SPA routing
+│   └── Dockerfile
+├── docker-compose.yml
+└── README.md
 ```
 
-### 3. Environment Setup
-Create a `.env` file in the `Backend` directory:
+---
+
+## 🔑 Environment Variables
+
+### `Backend/.env`
 ```env
-PORT=8080
-MONGODB_URL=your_mongodb_connection_string
-OPENAI_API_KEY=your_openai_api_key
+MONGODB_URL=mongodb+srv://<user>:<password>@cluster.mongodb.net/?retryWrites=true&w=majority
+OPENAI_API_KEY=sk-...
 ```
 
-Create a `.env` file in the `Frontend` directory:
+### `Frontend/.env`
 ```env
+# URL the browser uses to reach the backend
 VITE_API_BASE_URL=http://localhost:8080
 ```
 
-### 4. Running the App
-Run the backend and frontend concurrently:
+> **Note:** Neither `.env` file is committed to version control. Create them manually before running the app.
+
+---
+
+## 🖥️ Local Development (without Docker)
+
+### Prerequisites
+- Node.js v18+
+- A MongoDB Atlas cluster
+- An OpenAI API key
+
+### Install dependencies
 
 ```bash
-# Run Backend (from Backend dir)
-npm run dev
+# Backend
+cd Backend && npm install
 
-# Run Frontend (from Frontend dir)
+# Frontend
+cd ../Frontend && npm install
+```
+
+### Run
+
+```bash
+# Terminal 1 — Backend (http://localhost:8080)
+cd Backend
+node server.js
+
+# Terminal 2 — Frontend (http://localhost:5173)
+cd Frontend
 npm run dev
 ```
 
-## 🌐 Deployment
+---
 
-For instructions on how to deploy this project to **Render**, please see [DEPLOYMENT.md](./DEPLOYMENT.md).
+## 🐳 Docker Setup (Recommended)
+
+The entire application (backend + frontend via Nginx) runs with a single command using Docker Compose.
+
+### Prerequisites
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+
+### Architecture
+
+```
+Browser
+  │
+  ├── :80   → Frontend (Nginx serving React build)
+  └── :8080 → Backend  (Node.js / Express)
+                └── MongoDB Atlas (cloud)
+```
+
+### Run
+
+```bash
+docker-compose up --build
+```
+
+| Service | URL |
+|---|---|
+| Frontend | http://localhost |
+| Backend API | http://localhost:8080 |
+
+### Stop
+
+```bash
+docker-compose down
+```
+
+---
+
+## 🌐 Cloud Deployment
+
+For instructions on deploying to **Render**, see [DEPLOYMENT.md](./DEPLOYMENT.md).
 
 ---
 
