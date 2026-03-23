@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  # ── Backend (Express/Node) ─────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: sigmagpt-backend
+    restart: unless-stopped
+    env_file:
+      - ./Backend/.env        # loads MONGODB_URL and OPENAI_API_KEY
+    ports:
+      - "8080:8080"
+    networks:
+      - sigmagpt-network
+
+  # ── Frontend (React + Vite → Nginx) ───────────────────────────────────────
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+      args:
+        # Read VITE_API_BASE_URL from Frontend/.env at build time
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL}
+    env_file:
+      - ./Frontend/.env       # also available as runtime env (optional, kept for reference)
+    container_name: sigmagpt-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    networks:
+      - sigmagpt-network
+
+# ── Networks ───────────────────────────────────────────────────────────────
+networks:
+  sigmagpt-network:
+    driver: bridge
+
